@@ -2,6 +2,41 @@
 //to win horizontal, match this in any row [true, true, true].
 //to win vertical, must match all rows to [true, null, null], or [null, true, null], or [null, null, true]
 //to win diagonal, gameArray must match this pattern: [ [true, null, null], [null, true, null], [null, null, true] ] or [ [null, null, true], [null, true, null], [true, null, null] ]
+
+
+//var gameArray = [ [undefined, undefined, undefined], [undefined, undefined, undefined], [undefined, undefined, undefined] ]; // user = 1, computer = 0
+//var userTurn = undefined;
+//var currentPlayer = "X";
+//var gameIsActive = true; //this tells us when game is active, otherwise game over, prompt start again
+
+//choosing to be x or o
+
+ $(".xButton").click( function() { userTurn = true; });
+ $(".oButton").click( function() { userTurn = false; });
+
+ /* while (gameIsActive) {
+
+      if (userTurn) {
+        userMove();
+      } else {
+        computerMove();
+      }
+
+      if (currentPlayer == "X") {
+        currentPlayer = "O";
+      } else {
+        currentPlayer = "X";
+      }
+
+      if (winnerFound() == "User" || winnerFound() == "Computer") {
+        userTurn = undefined;
+      }
+
+ }  */
+
+
+
+
 const PLAYER_TOKEN = "x"
 const COMPUTER_TOKEN = "o";
 
@@ -11,6 +46,8 @@ const COMPUTER_TOKEN = "o";
       ['', '', ''],
       ['', '', '']
       ];
+
+// when win then game is over,  if winningArray is reached, then stop game,
 
   function isGameOver(){
       //is game over? here check rows
@@ -22,6 +59,8 @@ const COMPUTER_TOKEN = "o";
           }
         }
       
+// check for winners
+
 
       //check column
    /*   for (var j = 0; j <3; j++)
@@ -74,6 +113,11 @@ const COMPUTER_TOKEN = "o";
           return null;
         } */
 
+/*function userMove(){
+
+};
+*/
+
 
   $('td').click(function(){
     $this = $(this);
@@ -82,6 +126,9 @@ const COMPUTER_TOKEN = "o";
     const j = $this.data('j');
       grid[i][j] = PLAYER_TOKEN;
       console.log(grid);
+
+/*function computerMove(){
+  }; */
 
     /*  let gameState = isGameOver()
       if (gameState) {
