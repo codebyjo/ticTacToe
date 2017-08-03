@@ -36,43 +36,44 @@
 
   <div class="container">
     <div class="row" id="article">
+
       <header>
         <h1>Tic Tac Toe!</h1>
       </header>
 
-    <div class="player-select">
-      <button id="xButton">Play as X</button>
-      <button id="oButton">Play as O</button>
-    </div>
-
-
-      <table class="game">
-        <tr>
-          <td class="col" data-i=0 data-j=0> </td>
-          <td class="col" data-i=0 data-j=1> </td>
-          <td class="col" data-i=0 data-j=2> </td>
-        </tr>
-        <tr>
-          <td class="col" data-i=1 data-j=0> </td>
-          <td class="col" data-i=1 data-j=1> </td>
-          <td class="col" data-i=1 data-j=2> </td>
-        </tr>
-        <tr>
-          <td class="col" data-i=2 data-j=0> </td>
-          <td class="col" data-i=2 data-j=1> </td>
-          <td class="col" data-i=2 data-j=2> </td>
-        </tr>
-      </table>
-
-
-
-      <button id="restart">Restart</button>
-
+      <div id="center-table">
+        <table class="game">
+          <tr>
+            <td class="col" data-i=0 data-j=0>&nbsp;</td>
+            <td class="col" data-i=0 data-j=1>&nbsp;</td>
+            <td class="col" data-i=0 data-j=2>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="col" data-i=1 data-j=0>&nbsp;</td>
+            <td class="col" data-i=1 data-j=1>&nbsp;</td>
+            <td class="col" data-i=1 data-j=2>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="col" data-i=2 data-j=0>&nbsp;</td>
+            <td class="col" data-i=2 data-j=1>&nbsp;</td>
+            <td class="col" data-i=2 data-j=2>&nbsp;</td>
+          </tr>
+        </table>
+      </div>
 
       <footer>
         <div class="row">Made by: <a href="https://www.freecodecamp.com/eagarcia8">Eduardo Garcia</a> &amp; <a href="https://www.freecodecamp.com/codebyjo">Joanne Dang</a>
         </div>
       </footer>
+
+      <div id="modal-background">
+        <div id="modal-content">
+          <p>Pick your player token!</p>
+          <button id="xButton">X</button>
+          <button id="oButton">O</button>
+        </div>
+
+      </div>
     </div>
 
 
