@@ -73,7 +73,7 @@ $(document).ready(function() {
    for (var i = 0; i < 3; i++){
       for (var j= 0; j < 3; j++ ) {
         if (grid[i][j] === '\xa0') {
-          return 'not empty';
+          return false;
         }
       }
 
