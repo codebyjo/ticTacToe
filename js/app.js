@@ -40,39 +40,57 @@ $(document).ready(function() {
  });
 
  const grid = [
-   ['', '', ''],
-   ['', '', ''],
-   ['', '', '']
+   ['\xa0', '\xa0', '\xa0'],
+   ['\xa0', '\xa0', '\xa0'],
+   ['\xa0', '\xa0', '\xa0']
  ];
 
 // when win then game is over,  if winningArray is reached, then stop game,
 
  function isGameOver() {
-     //is game over? here check rows
-     for (var i = 0; i <3; i++) {
-       if ( grid[i][0] !== "" && grid[i][0] === grid[i][1] && grid[i][0] === grid[i][2]) {
-         return grid[i][0];
-       }
-     }
+     
+   //Check rows for matching tokens.
+   
+  for (var i = 0; i < 3; i++) {
+    if (grid[i][0] !== '\xa0' && grid[i][0] === grid[i][1] && grid[i][1] === grid[i][2]) {return grid[i][0];}
+  }
+  
+   //Check columns for matching tokens.
+  for (var j = 0; j < 3; j++) {
+    if (grid[0][j] !== '\xa0' && grid[0][j] === grid[1][j] && grid[0][j] === grid[2][j]) {return grid[0][j];}
+  }
+   
+  //Check diagonals backward slash for matching tokens.
+  if (grid[0][0] !== '\xa0' && grid[0][0] === grid[1][1] && grid[0][0] === grid[2][2]) {
+    return grid[0][0];
+  }
+   
+  //Check diagonal forward slash for matching tokens.
+  if (grid[2][0] !== '\xa0' && grid[2][0] === grid[1][1] && grid[2][0] === grid[0][2]) {
+    return grid[2][0];
+  }
 
- // check for winners
+   for (var i = 0; i < 3; i++){
+      for (var j= 0; j < 3; j++ ) {
+        if (grid[i][j] === '\xa0') {
+          return 'not empty';
+        }
+      }
 
-   //check column
-   for (var j = 0; j <3; j++) {
-     if (grid[0][j] !== " " && grid[0][j] === grid[1][j] && grid[0][j] === grid[2][j]) {
-       return grid[0][j];
-     }
    }
+   return null;
+ }
 
-   //check diagonal left top to right down
-   if (grid[0][0] !== " " && grid[0][0] === grid[1][1] && grid[0][0] === grid[2][2]) {
-     return grid[0][0];
-   }
 
-   //check diagonal top right to bottom dow
-   if (grid[2][2] !== " " && grid[2][2] === grid[1][1] && grid[2][2] === grid[0][0]) {
-     return grid[0][2];
-   }
+ function moveComputer(){
+  for (var i=0; i <3; i++){
+    for (var j= 0; j<3; j++){
+      if (grid[i][j] === '\xa0'){
+        return [i, j];
+      }
+    }
+  }
+  return null
  }
 
  function placeListeners() {
@@ -83,6 +101,18 @@ $(document).ready(function() {
     const i = $this.data('i');
     const j = $this.data('j');
     grid[i][j] = playerToken;
+
+    let gameState = isGameOver();
+  
+    if (gameState){
+      setTimeout(function() {
+        alert('Game Over!');
+      }, 1000);
+    } else {
+          const move = moveComputer()
+          grid[move.i][move.j]= computerToken;
+          $('td[data-i=' + move.i + '][data-j=' + move.j + ']').html(computerToken);
+        }
   });
 
   $('td').hover( function() {
@@ -100,54 +130,16 @@ $(document).ready(function() {
 
  }
 
-   // alternatve players
 
+  $('restart').click(function(){
+    grid = [
+        ['\xa0', '\xa0', '\xa0'],
+        ['\xa0', '\xa0', '\xa0'],
+        ['\xa0', '\xa0', '\xa0']
+      ];
 
-    /*     let empty = true;
-         for (var i=0; i<3; i++) {
-           for (var j = 0; j < 3; j++) {
-             if (grid[i][j]=== " ") {
-               return false;
-             }
-           }
-         }
-         return null;
-       }
+  $('td[data-i=' + i + '][data-j=' + j + ']').html('\xa0');
+  });
 
-  /*   function moveAI() {
-         for (var i=0; i<3; i++) {
-           for (var j = 0; j < 3; j++) {
-            if (grid[i][j]=== " ") {
-               return {
-                 i: i,
-                 j: j
-               };
-             }
-           }
-         }
-         return null;
-       } */
-
- /*function computerMove(){
-  }; */
-
-    /*  let gameState = isGameOver()
-      if (gameState) {
-        alert('game over: ' + gameState);
-
-        {if (isGameOver()) {
-      }
-
-      } else {
-        //move the computer
-        const move = moveAI()
-        grid[move.i][move.j] = COMPUTER_TOKEN;
-      }
-      let gameState = isGameOver()
-      if (gameState) {
-        alert('game over: ' + gameState);
-      }
-
-  */
 
 });
