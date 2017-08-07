@@ -1,145 +1,132 @@
-/* while (gameIsActive) {
+// Bug: If computer wins, we won't know until player clicks.
+$(document).ready(function () {
 
-     if (userTurn) {
-       userMove();
-     } else {
-       computerMove();
-     }
+    let playerToken;
+    let computerToken;
 
-     if (currentPlayer == "X") {
-       currentPlayer = "O";
-     } else {
-       currentPlayer = "X";
-     }
+    $("#xButton").click(() => {
+        playerToken = "X";
+        computerToken = "O";
+        $("#modal-background").hide();
+        placeListeners();
+    });
 
-     if (winnerFound() == "User" || winnerFound() == "Computer") {
-       userTurn = undefined;
-     }
+    $("#oButton").click(() => {
+        playerToken = "O";
+        computerToken = "X";
+        $("#modal-background").hide();
+        computerTurn();
+        placeListeners();
+    });
 
-}  */
-
-let playerToken;
-let computerToken;
-
-$(document).ready(function() {
-
- $("#xButton").click( () => {
-   userTurn = true;
-   playerToken = "X";
-   computerToken = "O";
-   $("#modal-background").hide();
-   placeListeners();
- });
-
- $("#oButton").click( () => {
-   userTurn = false;
-   playerToken = "O";
-   computerToken = "X";
-   $("#modal-background").hide();
-   placeListeners();
- });
-
- const grid = [
+    let grid = [
    ['\xa0', '\xa0', '\xa0'],
    ['\xa0', '\xa0', '\xa0'],
    ['\xa0', '\xa0', '\xa0']
  ];
 
-// when win then game is over,  if winningArray is reached, then stop game,
+    // when win then game is over,  if winningArray is reached, then stop game,
+    function checkMatch() {
 
- function isGameOver() {
-     
-   //Check rows for matching tokens.
-   
-  for (var i = 0; i < 3; i++) {
-    if (grid[i][0] !== '\xa0' && grid[i][0] === grid[i][1] && grid[i][1] === grid[i][2]) {return grid[i][0];}
-  }
-  
-   //Check columns for matching tokens.
-  for (var j = 0; j < 3; j++) {
-    if (grid[0][j] !== '\xa0' && grid[0][j] === grid[1][j] && grid[0][j] === grid[2][j]) {return grid[0][j];}
-  }
-   
-  //Check diagonals backward slash for matching tokens.
-  if (grid[0][0] !== '\xa0' && grid[0][0] === grid[1][1] && grid[0][0] === grid[2][2]) {
-    return grid[0][0];
-  }
-   
-  //Check diagonal forward slash for matching tokens.
-  if (grid[2][0] !== '\xa0' && grid[2][0] === grid[1][1] && grid[2][0] === grid[0][2]) {
-    return grid[2][0];
-  }
-
-   for (var i = 0; i < 3; i++){
-      for (var j= 0; j < 3; j++ ) {
-        if (grid[i][j] === '\xa0') {
-          return false;
+        //Check rows for matching tokens.
+        for (var i = 0; i < 3; i++) {
+            if (grid[i][0] !== '\xa0' && grid[i][0] === grid[i][1] && grid[i][1] === grid[i][2]) {
+                return grid[i][0];
+            }
         }
-      }
 
-   }
-   return null;
- }
-
-
- function moveComputer(){
-  for (var i=0; i <3; i++){
-    for (var j= 0; j<3; j++){
-      if (grid[i][j] === '\xa0'){
-        return [i, j];
-      }
-    }
-  }
-  return null
- }
-
- function placeListeners() {
-
-  $('td').click(function(){
-    let $this = $(this);
-    $this.html(playerToken);
-    const i = $this.data('i');
-    const j = $this.data('j');
-    grid[i][j] = playerToken;
-
-    let gameState = isGameOver();
-  
-    if (gameState){
-      setTimeout(function() {
-        alert('Game Over!');
-      }, 1000);
-    } else {
-          const move = moveComputer()
-          grid[move.i][move.j]= computerToken;
-          $('td[data-i=' + move.i + '][data-j=' + move.j + ']').html(computerToken);
+        //Check columns for matching tokens.
+        for (var j = 0; j < 3; j++) {
+            if (grid[0][j] !== '\xa0' && grid[0][j] === grid[1][j] && grid[0][j] === grid[2][j]) {
+                return grid[0][j];
+            }
         }
-  });
 
-  $('td').hover( function() {
-    let $this = $(this);
+        //Check diagonals backward slash for matching tokens.
+        if (grid[0][0] !== '\xa0' && grid[0][0] === grid[1][1] && grid[0][0] === grid[2][2]) {
+            return grid[0][0];
+        }
 
-    if ($this.text() === '\xa0') {
-      $this.css('background-color', '#bdc3c7');
-      $this.css('cursor', 'pointer');
+        //Check diagonal forward slash for matching tokens.
+        if (grid[2][0] !== '\xa0' && grid[2][0] === grid[1][1] && grid[2][0] === grid[0][2]) {
+            return grid[2][0];
+        }
+
+        return false;
     }
-  }, function() {
-    let $this = $(this);
-    $this.css('background-color', 'transparent');
-    $this.css('cursor', 'default');
-  });
 
- }
+    //Search for empty slot and return that slot, if no slots return null.
+    function checkOpenSlots() {
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                if (grid[i][j] === '\xa0') {
+                    return [i, j];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    function computerTurn() {
+        let winnerToken = checkMatch();
+
+        if (winnerToken !== false) {
+            console.log('The Winner is ' + winnerToken);
+        } else {
+            let move = checkOpenSlots();
+            if (move !== null) {
+                grid[move[0]][move[1]] = computerToken;
+                $('td[data-i=' + move[0] + '][data-j=' + move[1] + ']').text(computerToken);
+
+                winnerToken = checkMatch();
+                if (winnerToken !== false) {
+                    console.log('The Winner is ' + winnerToken);
+                }
+            } else {
+                console.log('The game is a tie!');
+            }
+        }
+    }
+
+    function placeListeners() {
+
+        $('td').click(function () {
+            let $this = $(this);
+            if ($this.text() === '\xa0') {
+                $this.text(playerToken);
+                const i = $this.data('i');
+                const j = $this.data('j');
+                grid[i][j] = playerToken;
+
+                computerTurn();
+
+            }
+        });
+
+        $('td').hover(function () {
+            let $this = $(this);
+            if ($this.text() === '\xa0') {
+                $this.css('background-color', '#bdc3c7');
+                $this.css('cursor', 'pointer');
+            }
+        }, function () {
+            let $this = $(this);
+            $this.css('background-color', 'transparent');
+            $this.css('cursor', 'default');
+        });
+    }
 
 
-  $('restart').click(function(){
-    grid = [
-        ['\xa0', '\xa0', '\xa0'],
-        ['\xa0', '\xa0', '\xa0'],
-        ['\xa0', '\xa0', '\xa0']
-      ];
+    $('#restartButton').click(function () {
+        grid = [
+            ['\xa0', '\xa0', '\xa0'],
+            ['\xa0', '\xa0', '\xa0'],
+            ['\xa0', '\xa0', '\xa0']
+        ];
 
-  $('td[data-i=' + i + '][data-j=' + j + ']').html('\xa0');
-  });
+        $('td').text('\xa0');
+    });
 
 
 });
