@@ -3,11 +3,17 @@ $(document).ready(function () {
 
     let playerToken;
     let computerToken;
+    let grid = [
+        ['\xa0', '\xa0', '\xa0'],
+        ['\xa0', '\xa0', '\xa0'],
+        ['\xa0', '\xa0', '\xa0']
+    ];
 
     $("#xButton").click(() => {
         playerToken = "X";
         computerToken = "O";
         $("#modal-background").hide();
+        $('td').text('\xa0');
         placeListeners();
     });
 
@@ -15,15 +21,16 @@ $(document).ready(function () {
         playerToken = "O";
         computerToken = "X";
         $("#modal-background").hide();
+        $('td').text('\xa0');
         computerTurn();
         placeListeners();
     });
-
-    let grid = [
-   ['\xa0', '\xa0', '\xa0'],
-   ['\xa0', '\xa0', '\xa0'],
-   ['\xa0', '\xa0', '\xa0']
- ];
+    
+    $('#restartButton').click(function () {
+        $('td').text('\xa0');
+        reset();
+        placeListeners();
+    });
 
     // when win then game is over,  if winningArray is reached, then stop game,
     function checkMatch() {
@@ -72,7 +79,7 @@ $(document).ready(function () {
         let winnerToken = checkMatch();
 
         if (winnerToken !== false) {
-            console.log('The Winner is ' + winnerToken);
+            winnerPopUp(winnerToken);
         } else {
             let move = checkOpenSlots();
             if (move !== null) {
@@ -81,10 +88,10 @@ $(document).ready(function () {
 
                 winnerToken = checkMatch();
                 if (winnerToken !== false) {
-                    console.log('The Winner is ' + winnerToken);
+                    winnerPopUp(winnerToken);
                 }
             } else {
-                console.log('The game is a tie!');
+                winnerPopUp('neither Player or Computer');
             }
         }
     }
@@ -92,6 +99,7 @@ $(document).ready(function () {
     function placeListeners() {
 
         $('td').click(function () {
+            console.log('clicked');
             let $this = $(this);
             if ($this.text() === '\xa0') {
                 $this.text(playerToken);
@@ -117,16 +125,20 @@ $(document).ready(function () {
         });
     }
 
-
-    $('#restartButton').click(function () {
+    function winnerPopUp(text) {
+        $('#modal-background').show();
+        $('#modal-content p:first').text('The winner is ' + text + '! Choose your player token to play again.');
+        
+        reset();
+    }
+    
+    function reset() {
         grid = [
             ['\xa0', '\xa0', '\xa0'],
             ['\xa0', '\xa0', '\xa0'],
             ['\xa0', '\xa0', '\xa0']
         ];
-
-        $('td').text('\xa0');
-    });
-
-
+        $('td').unbind();
+        $('td').css('background-color', 'transparent');
+    }
 });

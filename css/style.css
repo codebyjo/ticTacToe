@@ -95,7 +95,6 @@ footer {
   border-radius: 10px;
 }
 
-
 #modal-content button {
   background-color: #ecf0f1;
   width: 100px;
@@ -103,4 +102,18 @@ footer {
   border: 5px solid #bdc3c7;
   border-radius: 10px;
   margin: 50px;
+}
+
+#restartButton {
+    font-family: "Fredoka One", serif;
+    font-size: 2em;
+    color: #ecf0f1;
+    text-align: center;
+    background-color: #8e44ad;
+    width: 150px;
+    height: 50px;
+    border-style: none;
+    border-radius: 10px;
+    /*cannot center*/
+    margin: 0 43%;
 }
