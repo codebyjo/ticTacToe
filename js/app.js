@@ -9,6 +9,8 @@ $(document).ready(function () {
         ['\xa0', '\xa0', '\xa0']
     ];
 
+    let randomOpen = [];
+  
     $("#xButton").click(() => {
         playerToken = "X";
         computerToken = "O";
@@ -67,12 +69,10 @@ $(document).ready(function () {
         for (var i = 0; i < 3; i++) {
             for (var j = 0; j < 3; j++) {
                 if (grid[i][j] === '\xa0') {
-                    return [i, j];
+                    randomOpen.push([i,j]);
                 }
             }
         }
-
-        return null;
     }
 
     function computerTurn() {
@@ -81,8 +81,15 @@ $(document).ready(function () {
         if (winnerToken !== false) {
             winnerPopUp(winnerToken);
         } else {
-            let move = checkOpenSlots();
-            if (move !== null) {
+            checkOpenSlots();
+            console.log(randomOpen);
+            let move = Math.floor(Math.random() * randomOpen.length);
+            console.log("Random Number: ", move);
+            move = randomOpen[move];
+                        
+  
+            if (randomOpen.length !== 0) {
+                console.log("Actual Move: ", move, "Array: ", randomOpen);
                 grid[move[0]][move[1]] = computerToken;
                 $('td[data-i=' + move[0] + '][data-j=' + move[1] + ']').text(computerToken);
 
@@ -93,6 +100,8 @@ $(document).ready(function () {
             } else {
                 winnerPopUp('neither Player or Computer');
             }
+          
+            randomOpen = [];
         }
     }
 
